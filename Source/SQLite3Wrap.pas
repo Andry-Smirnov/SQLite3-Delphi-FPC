@@ -34,8 +34,10 @@ unit SQLite3Wrap;
 
 interface
 
+
 uses
   SysUtils, Classes, SQLite3;
+
 
 type
   ESQLite3Error = class(Exception);
@@ -136,7 +138,9 @@ type
     property OwnerDatabase: TSQLite3Database read FOwnerDatabase;
   end;
 
+
 implementation
+
 
 uses
   SQLite3Utils;
@@ -207,6 +211,7 @@ begin
   else
     raise ESQLite3Error.Create(SNoTransactionOpen);
 end;
+
 
 constructor TSQLite3Database.Create;
 begin
@@ -359,6 +364,7 @@ begin
   Result := sqlite3_column_type(FHandle, ColumnIndex);
 end;
 
+
 constructor TSQLite3Statement.Create(OwnerDatabase: TSQLite3Database;
   const SQL: WideString);
 begin
@@ -445,6 +451,7 @@ begin
   Result := sqlite3_blob_bytes(FHandle);
 end;
 
+
 constructor TSQLite3BlobHandler.Create(OwnerDatabase: TSQLite3Database; const Table,
   Column: WideString; const RowID: Int64; const WriteAccess: Boolean);
 begin
@@ -475,5 +482,6 @@ procedure TSQLite3BlobHandler.Write(Buffer: Pointer; const Size,
 begin
   FOwnerDatabase.Check(sqlite3_blob_write(FHandle, Buffer, Size, Offset));
 end;
+
 
 end.

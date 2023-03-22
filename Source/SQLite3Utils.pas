@@ -39,7 +39,9 @@ function UTF8ToStr(const S: PAnsiChar; const Len: Integer = -1): WideString;
 function QuotedStr(const S: WideString): WideString;
 function FloatToSQLStr(Value: Extended): WideString;
 
+
 implementation
+
 
 uses
   {$IFNDEF FPC}Windows,{$ENDIF} SysUtils;
@@ -90,5 +92,6 @@ begin
   FS.DecimalSeparator := '.';
   Result := FloatToStr(Value, FS);
 end;
+
 
 end.

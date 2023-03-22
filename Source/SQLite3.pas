@@ -53,6 +53,7 @@ type
   PPAnsiCharArray = ^TPAnsiCharArray;
   TPAnsiCharArray = array[0..MaxInt div SizeOf(PAnsiChar) - 1] of PAnsiChar;
 
+
 const
 {$IFDEF MSWINDOWS}
   sqlite3_lib = 'sqlite3.dll';
@@ -71,15 +72,18 @@ function sqlite3_libversion_number: Integer; cdecl; external sqlite3_lib;
 
 function sqlite3_threadsafe: Integer; cdecl; external sqlite3_lib;
 
+
 type
   PSQLite3 = type Pointer;
 
 function sqlite3_close(db: PSQLite3): Integer; cdecl; external sqlite3_lib;
 
+
 type
   TSQLite3Callback = function(pArg: Pointer; nCol: Integer; argv: PPAnsiCharArray; colv: PPAnsiCharArray): Integer; cdecl;
 
 function sqlite3_exec(db: PSQLite3; const sql: PAnsiChar; callback: TSQLite3Callback; pArg: Pointer; errmsg: PPAnsiChar): Integer; cdecl; external sqlite3_lib;
+
 
 const
   SQLITE_OK         = 0;
@@ -112,6 +116,7 @@ const
   SQLITE_ROW        = 100;
   SQLITE_DONE       = 101;
 
+
 const
   SQLITE_IOERR_READ              = SQLITE_IOERR or (1 shl 8);
   SQLITE_IOERR_SHORT_READ        = SQLITE_IOERR or (2 shl 8);
@@ -132,6 +137,7 @@ const
   SQLITE_IOERR_DIR_CLOSE         = SQLITE_IOERR or (17 shl 8);
   SQLITE_LOCKED_SHAREDCACHE      = SQLITE_LOCKED or (1 shl 8);
 
+
 const
   SQLITE_OPEN_READONLY       = $00000001;
   SQLITE_OPEN_READWRITE      = $00000002;
@@ -150,6 +156,7 @@ const
   SQLITE_OPEN_SHAREDCACHE    = $00020000;
   SQLITE_OPEN_PRIVATECACHE   = $00040000;
 
+
 const
   SQLITE_IOCAP_ATOMIC      = $00000001;
   SQLITE_IOCAP_ATOMIC512   = $00000002;
@@ -163,6 +170,7 @@ const
   SQLITE_IOCAP_SAFE_APPEND = $00000200;
   SQLITE_IOCAP_SEQUENTIAL  = $00000400;
 
+
 const
   SQLITE_LOCK_NONE      = 0;
   SQLITE_LOCK_SHARED    = 1;
@@ -170,10 +178,12 @@ const
   SQLITE_LOCK_PENDING   = 3;
   SQLITE_LOCK_EXCLUSIVE = 4;
 
+
 const
   SQLITE_SYNC_NORMAL   = $00002;
   SQLITE_SYNC_FULL     = $00003;
   SQLITE_SYNC_DATAONLY = $00010;
+
 
 type
   PSQLite3File = ^TSQLite3File;
@@ -201,14 +211,17 @@ type
   end;
   TSQLite3IOMethods = sqlite3_io_methods;
 
+
 const
   SQLITE_FCNTL_LOCKSTATE   = 1;
   SQLITE_GET_LOCKPROXYFILE = 2;
   SQLITE_SET_LOCKPROXYFILE = 3;
   SQLITE_LAST_ERRNO        = 4;
 
+
 type
   PSQLite3Mutex = type Pointer;
+
 
 type
   PSQLite3VFS = ^TSQLite3VFS;
@@ -234,6 +247,7 @@ type
   end;
   TSQLite3VFS = sqlite3_vfs;
 
+
 const
   SQLITE_ACCESS_EXISTS    = 0;
   SQLITE_ACCESS_READWRITE = 1;
@@ -249,6 +263,7 @@ function sqlite3_config(op: Integer{; ...}): Integer; cdecl; external sqlite3_li
 
 function sqlite3_db_config(db: PSQLite3; op: Integer{; ...}): Integer; cdecl; external sqlite3_lib;
 
+
 type
   sqlite3_mem_methods = record
     xMalloc: function(nByte: Integer): Pointer; cdecl;
@@ -261,6 +276,7 @@ type
     pAppData: Pointer;
   end;
   TSQLite3MemMethods = sqlite3_mem_methods;
+
 
 const
   SQLITE_CONFIG_SINGLETHREAD = 1;
@@ -279,6 +295,7 @@ const
   SQLITE_CONFIG_PCACHE       = 14;
   SQLITE_CONFIG_GETPCACHE    = 15;
 
+
 const
   SQLITE_DBCONFIG_LOOKASIDE  = 1001;
 {$ENDIF}
@@ -295,6 +312,7 @@ procedure sqlite3_interrupt(db: PSQLite3); cdecl; external sqlite3_lib;
 
 function sqlite3_complete(const sql: PAnsiChar): Integer; cdecl; external sqlite3_lib;
 function sqlite3_complete16(const sql: PWideChar): Integer; cdecl; external sqlite3_lib;
+
 
 type
   TSQLite3BusyCallback = function(ptr: Pointer; count: Integer): Integer; cdecl;
@@ -319,14 +337,17 @@ function sqlite3_memory_highwater(resetFlag: Integer): Int64; cdecl; external sq
 
 procedure sqlite3_randomness(N: Integer; P: Pointer); cdecl; external sqlite3_lib;
 
+
 type
   TSQLite3AuthorizerCallback = function(pAuthArg: Pointer; code: Integer; const zTab: PAnsiChar; const zCol: PAnsiChar; const zDb: PAnsiChar; const zAuthContext: PAnsiChar): Integer; cdecl;
 
 function sqlite3_set_authorizer(db: PSQLite3; xAuth: TSQLite3AuthorizerCallback; pUserData: Pointer): Integer; cdecl; external sqlite3_lib;
 
+
 const
   SQLITE_DENY   = 1;
   SQLITE_IGNORE = 2;
+
 
 const
   SQLITE_CREATE_INDEX        = 1;
@@ -386,10 +407,12 @@ function sqlite3_extended_errcode(db: PSQLite3): Integer; cdecl; external sqlite
 function sqlite3_errmsg(db: PSQLite3): PAnsiChar; cdecl; external sqlite3_lib;
 function sqlite3_errmsg16(db: PSQLite3): PWideChar; cdecl; external sqlite3_lib;
 
+
 type
   PSQLite3Stmt = type Pointer;
 
 function sqlite3_limit(db: PSQLite3; limitId: Integer; newLimit: Integer): Integer; cdecl; external sqlite3_lib;
+
 
 const
   SQLITE_LIMIT_LENGTH              = 0;
@@ -411,6 +434,7 @@ function sqlite3_prepare16_v2(db: PSQLite3; const zSql: PWideChar; nByte: Intege
 
 function sqlite3_sql(pStmt: PSQLite3Stmt): PAnsiChar; cdecl; external sqlite3_lib;
 
+
 type
   PSQLite3Value = ^TSQLite3Value;
   sqlite3_value = type Pointer;
@@ -419,11 +443,14 @@ type
   PPSQLite3ValueArray = ^TPSQLite3ValueArray;
   TPSQLite3ValueArray = array[0..MaxInt div SizeOf(PSQLite3Value) - 1] of PSQLite3Value;
 
+
 type
   PSQLite3Context = type Pointer;
 
+
 type
   TSQLite3DestructorType = procedure(p: Pointer); cdecl;
+
 
 const
   SQLITE_STATIC    = Pointer(0);
@@ -468,6 +495,7 @@ function sqlite3_step(pStmt: PSQLite3Stmt): Integer; cdecl; external sqlite3_lib
 
 function sqlite3_data_count(pStmt: PSQLite3Stmt): Integer; cdecl; external sqlite3_lib;
 
+
 const
   SQLITE_INTEGER = 1;
   SQLITE_FLOAT   = 2;
@@ -491,6 +519,7 @@ function sqlite3_finalize(pStmt: PSQLite3Stmt): Integer; cdecl; external sqlite3
 
 function sqlite3_reset(pStmt: PSQLite3Stmt): Integer; cdecl; external sqlite3_lib;
 
+
 type
   TSQLite3RegularFunction = procedure(ctx: PSQLite3Context; n: Integer; apVal: PPSQLite3ValueArray); cdecl;
   TSQLite3AggregateStep = procedure(ctx: PSQLite3Context; n: Integer; apVal: PPSQLite3ValueArray); cdecl;
@@ -498,6 +527,7 @@ type
 
 function sqlite3_create_function(db: PSQLite3; const zFunctionName: PAnsiChar; nArg: Integer; eTextRep: Integer; pApp: Pointer; xFunc: TSQLite3RegularFunction; xStep: TSQLite3AggregateStep; xFinal: TSQLite3AggregateFinalize): Integer; cdecl; external sqlite3_lib;
 function sqlite3_create_function16(db: PSQLite3; const zFunctionName: PWideChar; nArg: Integer; eTextRep: Integer; pApp: Pointer; xFunc: TSQLite3RegularFunction; xStep: TSQLite3AggregateStep; xFinal: TSQLite3AggregateFinalize): Integer; cdecl; external sqlite3_lib;
+
 
 const
   SQLITE_UTF8          = 1;
@@ -538,6 +568,7 @@ function sqlite3_user_data(p: PSQLite3Context): Pointer; cdecl; external sqlite3
 
 function sqlite3_context_db_handle(p: PSQLite3Context): PSQLite3; cdecl; external sqlite3_lib;
 
+
 type
   TSQLite3AuxDataDestructor = procedure(pAux: Pointer); cdecl;
 
@@ -561,6 +592,7 @@ procedure sqlite3_result_text16be(pCtx: PSQLite3Context; const z: Pointer; n: In
 procedure sqlite3_result_value(pCtx: PSQLite3Context; pValue: PSQLite3Value); cdecl; external sqlite3_lib;
 procedure sqlite3_result_zeroblob(pCtx: PSQLite3Context; n: Integer); cdecl; external sqlite3_lib;
 
+
 type
   TSQLite3CollationCompare = function(pUser: Pointer; n1: Integer; const z1: Pointer; n2: Integer; const z2: Pointer): Integer; cdecl;
   TSQLite3CollationDestructor = procedure(pUser: Pointer); cdecl;
@@ -568,6 +600,7 @@ type
 function sqlite3_create_collation(db: PSQLite3; const zName: PAnsiChar; eTextRep: Integer; pUser: Pointer; xCompare: TSQLite3CollationCompare): Integer; cdecl; external sqlite3_lib;
 function sqlite3_create_collation_v2(db: PSQLite3; const zName: PAnsiChar; eTextRep: Integer; pUser: Pointer; xCompare: TSQLite3CollationCompare; xDestroy: TSQLite3CollationDestructor): Integer; cdecl; external sqlite3_lib;
 function sqlite3_create_collation16(db: PSQLite3; const zName: PWideChar; eTextRep: Integer; pUser: Pointer; xCompare: TSQLite3CollationCompare): Integer; cdecl; external sqlite3_lib;
+
 
 type
   TSQLite3CollationNeededCallback = procedure(pCollNeededArg: Pointer; db: PSQLite3; eTextRep: Integer; const zExternal: PAnsiChar); cdecl;
@@ -590,12 +623,14 @@ function sqlite3_db_handle(pStmt: PSQLite3Stmt): PSQLite3; cdecl; external sqlit
 
 function sqlite3_next_stmt(pDb: PSQLite3; pStmt: PSQLite3Stmt): PSQLite3Stmt; cdecl; external sqlite3_lib;
 
+
 type
   TSQLite3CommitCallback = function(pCommitArg: Pointer): Integer; cdecl;
   TSQLite3RollbackCallback = procedure(pRollbackArg: Pointer); cdecl;
 
 function sqlite3_commit_hook(db: PSQLite3; xCallback: TSQLite3CommitCallback; pArg: Pointer): Pointer; cdecl; external sqlite3_lib;
 function sqlite3_rollback_hook(db: PSQLite3; xCallback: TSQLite3RollbackCallback; pArg: Pointer): Pointer; cdecl; external sqlite3_lib;
+
 
 type
   TSQLite3UpdateCallback = procedure(pUpdateArg: Pointer; op: Integer; const zDb: PAnsiChar; const zTbl: PAnsiChar; iKey: Int64); cdecl;
@@ -616,6 +651,7 @@ function sqlite3_load_extension(db: PSQLite3; const zFile: PAnsiChar; const zPro
 
 function sqlite3_enable_load_extension(db: PSQLite3; onoff: Integer): Integer; cdecl; external sqlite3_lib;
 
+
 type
   TSQLiteAutoExtensionEntryPoint = procedure; cdecl;
 
@@ -626,6 +662,7 @@ procedure sqlite3_reset_auto_extension; cdecl; external sqlite3_lib;
 {$IFDEF SQLITE_EXPERIMENTAL}
 type
   TSQLite3FTS3Func = procedure(pContext: PSQLite3Context; argc: Integer; argv: PPSQLite3ValueArray); cdecl;
+
 
 type
   PSQLite3VTab = ^TSQLite3VTab;
@@ -712,6 +749,7 @@ type
   end;
   TSQLite3VTabCursor = sqlite3_vtab_cursor;
 
+
 const
   SQLITE_INDEX_CONSTRAINT_EQ    = 2;
   SQLITE_INDEX_CONSTRAINT_GT    = 4;
@@ -721,6 +759,7 @@ const
   SQLITE_INDEX_CONSTRAINT_MATCH = 64;
 
 function sqlite3_create_module(db: PSQLite3; const zName: PAnsiChar; const p: PSQLite3Module; pClientData: Pointer): Integer; cdecl; external sqlite3_lib;
+
 
 type
   TSQLite3ModuleDestructor = procedure(pAux: Pointer); cdecl;
@@ -793,6 +832,7 @@ function sqlite3_file_control(db: PSQLite3; const zDbName: PAnsiChar; op: Intege
 
 function sqlite3_test_control(op: Integer{; ...}): Integer; cdecl; external sqlite3_lib;
 
+
 const
   SQLITE_TESTCTRL_FIRST               = 5;
   SQLITE_TESTCTRL_PRNG_SAVE           = 5;
@@ -812,6 +852,7 @@ const
 {$IFDEF SQLITE_EXPERIMENTAL}
 function sqlite3_status(op: Integer; var pCurrent: Integer; var pHighwater: Integer; resetFlag: Integer): Integer; cdecl; external sqlite3_lib;
 
+
 const
   SQLITE_STATUS_MEMORY_USED        = 0;
   SQLITE_STATUS_PAGECACHE_USED     = 1;
@@ -825,17 +866,21 @@ const
 
 function sqlite3_db_status(db: PSQLite3; op: Integer; var pCur: Integer; var pHiwtr: Integer; resetFlg: Integer): Integer; cdecl; external sqlite3_lib;
 
+
 const
   SQLITE_DBSTATUS_LOOKASIDE_USED = 0;
 
 function sqlite3_stmt_status(pStmt: PSQLite3Stmt; op: Integer; resetFlg: Integer): Integer; cdecl; external sqlite3_lib;
 
+
 const
   SQLITE_STMTSTATUS_FULLSCAN_STEP = 1;
   SQLITE_STMTSTATUS_SORT          = 2;
 
+
 type
   PSQLite3PCache = type Pointer;
+
 
 type
   sqlite3_pcache_methods = record
@@ -852,6 +897,7 @@ type
     xDestroy: procedure(pCache: PSQLite3PCache); cdecl;
   end;
   TSQLite3PCacheMethods = sqlite3_pcache_methods;
+
 
 type
   PSQLite3Backup = type Pointer;
@@ -874,6 +920,8 @@ function sqlite3_strnicmp(const zLeft: PAnsiChar; const zRight: PAnsiChar; N: In
 
 //function sqlite3_win32_mbcs_to_utf8(const S: PAnsiChar): PAnsiChar; cdecl; external sqlite3_lib;
 
+
 implementation
+
 
 end.

@@ -4,9 +4,11 @@ unit Main;
 
 interface
 
+
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls;
+
 
 type
 
@@ -21,10 +23,13 @@ type
     procedure Button_DB_ReadClick(Sender: TObject);
   end;
 
+
 var
   Form_Main: TForm_Main;
 
+
 implementation
+
 
 uses
   SQLite3, SQLite3Wrap;
@@ -224,6 +229,7 @@ begin
   Memo_Result.Lines.Add('------------------------------------------------');
   Memo_Result.Lines.Add('');
 end;
+
 
 end.
 
